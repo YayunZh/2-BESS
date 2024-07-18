@@ -5,7 +5,7 @@ Generate voltage levels and corresponding time intervals based on the number of 
 ## Task 2 user input
 Set system and environment parameters.
 ## Task 3 connection design(layer 1 converter & battery use)
-Using distribution flattening method to get Expected Set of Batteries(the battery power（current）capability)，then sovle MILP problem to select the best layer 1 converter connections and the best battery connections.   
+Using distribution flattening method to get Expected Set of Batteries(the battery power(current)capability)，then sovle MILP problem to select the best layer 1 converter connections and the best battery connections.   
 contain function: func_connection_design , func_energyflow_connection
 ## Task 4 MC simulation
 Fix batteries and layer 1 converter connections, MC simulations are performed to obtain the average Up and system efficiency  
