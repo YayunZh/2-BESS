@@ -107,8 +107,8 @@ function OptRes = func_energyflow_connection(SYS, TEST)
     % [4] the constriant for battery Power(current) Limit
     for i = 1:Node_num
         for k = 1:T_num
-        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k) - sum(I_C_f(i, :, k)) - sum(I_C_s(i, :, k))];
-        Constraints = [Constraints, I_B(i, k) - sum(I_C_f(i, :, k)) - sum(I_C_s(i, :, k)) >= -SYS.Bat{i}.curlim];
+        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k)];
+        Constraints = [Constraints, I_B(i, k)  >= -SYS.Bat{i}.curlim];
         end
     end
 
@@ -252,8 +252,8 @@ function OptRes = func_energyflow_connection(SYS, TEST)
     % [4] the constriant for battery Power(current) Limit
     for i = 1:Node_num
         for k = 1:T_num
-        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k) - sum(I_C_f(i, :, k)) - sum(I_C_s(i, :, k))];
-        Constraints = [Constraints, I_B(i, k) - sum(I_C_f(i, :, k)) - sum(I_C_s(i, :, k)) >= -SYS.Bat{i}.curlim];
+        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k)];
+        Constraints = [Constraints, I_B(i, k) >= -SYS.Bat{i}.curlim];
         end
     end
 
