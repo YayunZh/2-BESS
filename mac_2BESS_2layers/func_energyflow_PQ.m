@@ -22,8 +22,8 @@ function OptRes = func_energyflow_PQ(SYS, TEST)
     % First optimization - battery power utilization
     ops = sdpsettings('solver', 'gurobi', ...    
                       'gurobi.Threads', 8, ...
-                      'gurobi.MIPGap', 0.01, ... 
-                      'gurobi.TimeLimit', 720, ...
+                      'gurobi.MIPGap', 0.03, ... 
+                      'gurobi.TimeLimit', 200, ...
                       'gurobi.Presolve', 2, ...
                       'gurobi.Cuts', 2,...
                       'gurobi.Heuristics', 1);
@@ -65,7 +65,7 @@ function OptRes = func_energyflow_PQ(SYS, TEST)
     % [2] the constriant for output and phase shift
     Constraints = [Constraints, I_max >= 0];
     f = 1;
-    M = 100;
+    M = 1000;
     t_delay = TEST.t_delay; % phase shift
 
     t = linspace(0, 1/f, 1000);
@@ -123,8 +123,8 @@ function OptRes = func_energyflow_PQ(SYS, TEST)
     % [4] the constriant for battery Power(current) Limit
     for i = 1:Node_num
         for k = 1:T_num
-        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k)];
-        Constraints = [Constraints, I_B(i, k)>= -SYS.Bat{i}.curlim];
+        Constraints = [Constraints, SYS.Bat{i}.curlim * Bat_use(i, k) >= I_B(i, k)];
+        Constraints = [Constraints, I_B(i, k)>= -SYS.Bat{i}.curlim * Bat_use(i, k)];
         end
     end
 
@@ -152,15 +152,6 @@ function OptRes = func_energyflow_PQ(SYS, TEST)
     for k = 1:T_num
         Constraints = [Constraints, sum(Bat_use(:, k)) == abs(floor(Output_waveform(k) / 24))];
     end
-
-        % battery connect to the load
-        M = 100;
-        for k = 1:T_num
-            for i = 1:Node_num
-            Constraints = [Constraints, I_B(i, k) <= M * Bat_use(i, k)];
-            Constraints = [Constraints, I_B(i, k) >= -M * Bat_use(i, k)];
-            end
-        end
 
     optimize(Constraints, -Objective, ops);
 

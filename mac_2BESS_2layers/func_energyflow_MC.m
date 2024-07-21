@@ -22,7 +22,7 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     end
 
     Conv_lim = P_lim * lim_sum / (Node_num - 1 + Conv_Fir_num);
-
+   
     yalmip('clear');
     % First optimization - battery power utilization
     ops = sdpsettings('solver', 'gurobi', ...    
@@ -57,7 +57,7 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     end
 
     % [2] the constriant for KCL 
-    M = 100;
+    M = 1000;
     for k = 1:T_num
          for i = 1:Node_num
          Constraints = [Constraints, sum(I_C_f(i, :, k)) + sum(I_C_s(i, :, k)) + I_B(i,k) - I_L(k) <= M * (1 - Bat_use(i, k))];
@@ -93,8 +93,8 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     % [4] the constriant for battery Power(current) Limit
     for i = 1:Node_num
         for k = 1:T_num
-        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k)];
-        Constraints = [Constraints, I_B(i, k) >= -SYS.Bat{i}.curlim];
+        Constraints = [Constraints, SYS.Bat{i}.curlim * Bat_use(i, k) >= I_B(i, k)];
+        Constraints = [Constraints, I_B(i, k)>= -SYS.Bat{i}.curlim * Bat_use(i, k)];
         end
     end
 
@@ -123,14 +123,6 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     for k = 1:T_num
         Constraints = [Constraints, I_L(k) == (abs(floor(Output_waveform(k) /24))/Node_num)*I_L(Node_num+1)];
     end
-        % battery connect to the load
-        M = 100;
-        for k = 1:T_num
-            for i = 1:Node_num
-            Constraints = [Constraints, I_B(i, k) <= M * Bat_use(i, k)];
-            Constraints = [Constraints, I_B(i, k) >= -M * Bat_use(i, k)];
-            end
-        end
 
     optimize(Constraints, -Objective, ops);
    
@@ -181,7 +173,7 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     end
 
     % [2] the constriant for KCL 
-    M = 100;
+    M = 1000;
     for k = 1:T_num
          for i = 1:Node_num
          Constraints = [Constraints, sum(I_C_f(i, :, k)) + sum(I_C_s(i, :, k)) + I_B(i,k) - I_L(k) <= M * (1 - Bat_use(i, k))];
@@ -216,8 +208,8 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     % [4] the constriant for battery Power(current) Limit
     for i = 1:Node_num
         for k = 1:T_num
-        Constraints = [Constraints, SYS.Bat{i}.curlim >= I_B(i, k) ];
-        Constraints = [Constraints, I_B(i, k) >= -SYS.Bat{i}.curlim];
+        Constraints = [Constraints, SYS.Bat{i}.curlim * Bat_use(i, k) >= I_B(i, k)];
+        Constraints = [Constraints, I_B(i, k)>= -SYS.Bat{i}.curlim * Bat_use(i, k)];
         end
     end
 
@@ -245,14 +237,6 @@ function OptRes = func_energyflow_MC(Bat_Info_MC, SYS, TEST, QL_connection, P_Fi
     for k = 1:T_num
         Constraints = [Constraints, I_L(k) == (abs(floor(Output_waveform(k) /24))/Node_num)*I_L(Node_num+1)];
     end
-        % battery connect to the load
-        M = 100;
-        for k = 1:T_num
-            for i = 1:Node_num
-            Constraints = [Constraints, I_B(i, k) <= M * Bat_use(i, k)];
-            Constraints = [Constraints, I_B(i, k) >= -M * Bat_use(i, k)];
-            end
-        end
 
     optimize(Constraints, Objective2, ops);
 
