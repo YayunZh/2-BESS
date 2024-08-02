@@ -291,10 +291,35 @@ function OptRes = func_energyflow_connection(SYS, TEST)
 
     % calculate efficiency
     for i = 1:T_num
-        energy_t(i) = Delta_t(i) * value(I_L(i));
+        energy_t(i) = Delta_t(i) * value(I_L(i)) * sum(OptRes.Bat_use(:,i));
     end
-    energy_sum = sum(energy_t)*Node_num;
+    energy_sum = sum(energy_t);
     conv_eta = 0.85;
     OptRes.efficience = (1-(OptRes.I_process*(1-conv_eta))/energy_sum)*100;
 
+    for i = 1:Node_num
+        Bat(i,1) = 0;
+        for k = 1:T_num
+            Bat(i,k+1) = OptRes.Bat_use(i,k);
+        end
+    end
+
+    for k = 1:T_num
+        for i = 1 : Node_num
+        Engloss_turnon(i,k) = Bat(i,k+1) * Delta_t(k) * OptRes.I_L(k) * OptRes.I_L(k) * 0.02;
+        
+        if(Bat(i,k+1) - Bat(i,k)==1)
+            Engloss_sw(i,k) = 12 * OptRes.I_L(k) * 0.25 * 1e-6;
+        else if((Bat(i,k+1) - Bat(i,k)==-1))
+            Engloss_sw(i,k) = 12 * OptRes.I_L(k-1) * 0.25 * 1e-6;
+        else
+            Engloss_sw(i,k) = 0;
+        end
+        
+        end
+    end
+
+    Engloss_total = sum(sum(Engloss_turnon)) + sum(sum(Engloss_sw));
+    OptRes.efficience2 = (1-(Engloss_total/(energy_sum*24)))*OptRes.efficience;
+        
 end

@@ -149,8 +149,8 @@ TEST3.Fir_Conv.Num = 3; % number of fist layer converter
 TEST3.Conv.partition = 1; % how to partition converters to achieve the economic of scales
 TEST3.Fir_Conv.Position = 0; % select experience positions to save time(1) or re-optimisation(0)
 
-TEST3.Sweep.Stat.Conv = 16;   % number of var converter power limit to sweep
-TEST3.Sweep.Conv.p_lim = [0.01,0.03,0.05,0.07,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1];%linspace(0.01,0.9,TEST.Sweep.Stat.Conv);% 
+TEST3.Sweep.Stat.Conv = 13;   % number of var converter power limit to sweep
+TEST3.Sweep.Conv.p_lim = [0.1,0.12,0.14,0.16,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.4,0.5];%linspace(0.01,0.9,TEST.Sweep.Stat.Conv);% 
 TEST3.Sweep.Stat.Bat = 5;     % number of battery types to sweep - heterogeneity
 for i = 1:SYS3.Stat.Bat_num
     TEST3.Sweep.Bat{i}.curlim_mu = linspace(1*25,1*25,TEST3.Sweep.Stat.Bat); 
@@ -184,32 +184,32 @@ toc
 save('MC.mat','Opt_MC');
 
 
-%% Task 5 Output PQ
-clear;
-load('TEST3');
-load('SYS3');
-TEST5 = TEST3;
-SYS5 = SYS3;
-
-TEST5.Sweep.Stat.Conv = 10;   % number of var converter power limit to sweep
-TEST5.Sweep.Conv.p_lim = [0.01,0.05,0.1,0.15,0.2,0.3,0.4,0.6,0.8,1];%linspace(0.01,0.9,TEST.Sweep.Stat.Conv);% 
-TEST5.Sweep.Stat.Bat = 5;     % number of battery types to sweep - heterogeneity
-for i = 1:SYS3.Stat.Bat_num
-    TEST5.Sweep.Bat{i}.curlim_mu = linspace(1*25,1*25,TEST5.Sweep.Stat.Bat); 
-    TEST5.Sweep.Bat{i}.curlim_var = linspace(0.05*25,0.25*25,TEST5.Sweep.Stat.Bat);
-end
-
-TEST5.Sweep.Stat.phi = 100; % number of phase shift
-TEST5.Sweep.phi = linspace(-0.99,0,TEST5.Sweep.Stat.phi);
-TEST5.t_delay = 1; 
-
-TEST5.Fir_Conv.Position = 1;
-
-save('SYS5','SYS5');
-save('TEST5','TEST5');
-tic
-Opt_PQ = func_PQ(SYS5,TEST5);
-toc
+% %% Task 5 Output PQ
+% clear;
+% load('TEST3');
+% load('SYS3');
+% TEST5 = TEST3;
+% SYS5 = SYS3;
+% 
+% TEST5.Sweep.Stat.Conv = 10;   % number of var converter power limit to sweep
+% TEST5.Sweep.Conv.p_lim = [0.01,0.05,0.1,0.15,0.2,0.3,0.4,0.6,0.8,1];%linspace(0.01,0.9,TEST.Sweep.Stat.Conv);% 
+% TEST5.Sweep.Stat.Bat = 5;     % number of battery types to sweep - heterogeneity
+% for i = 1:SYS3.Stat.Bat_num
+%     TEST5.Sweep.Bat{i}.curlim_mu = linspace(1*25,1*25,TEST5.Sweep.Stat.Bat); 
+%     TEST5.Sweep.Bat{i}.curlim_var = linspace(0.05*25,0.25*25,TEST5.Sweep.Stat.Bat);
+% end
+% 
+% TEST5.Sweep.Stat.phi = 100; % number of phase shift
+% TEST5.Sweep.phi = linspace(-0.99,0,TEST5.Sweep.Stat.phi);
+% TEST5.t_delay = 1; 
+% 
+% TEST5.Fir_Conv.Position = 1;
+% 
+% save('SYS5','SYS5');
+% save('TEST5','TEST5');
+% tic
+% Opt_PQ = func_PQ(SYS5,TEST5);
+% toc
 
 %%
 function digital_signal = quantize(analog_signal, battery_voltage)

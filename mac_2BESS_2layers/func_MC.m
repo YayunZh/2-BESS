@@ -17,15 +17,18 @@ for k0 = 1 : TEST.Sweep.Stat.Bat       % for different heterogeneous degree
 
             Up(k0,k1,k2) = OptResMC(k0,k1,k2).up;
             Eff(k0,k1,k2) = OptResMC(k0,k1,k2).efficience;
+            Eff2(k0,k1,k2) = OptResMC(k0,k1,k2).efficience2;
         end 
 
         Up_avg(k0,k1) = sum(Up(k0,k1,:))/TEST.Conv.MC_trial;
         Eff_avg(k0,k1) = sum(Eff(k0,k1,:))/TEST.Conv.MC_trial;
+        Eff2_avg(k0,k1) = sum(Eff2(k0,k1,:))/TEST.Conv.MC_trial;
     end
 end
 
 Opt_MC.power_Utilization = Up_avg;
 Opt_MC.efficience = Eff_avg;
+Opt_MC.efficience2 = Eff2_avg;
 Opt_MC.MC = OptResMC;
 
 end
