@@ -1,7 +1,7 @@
 function Opt_PQ = func_PQ(SYS,TEST)
 
 %% 
-for a = 4 %1 : TEST.Sweep.Stat.Bat % for different heterogeneous degree
+for a = 1 : TEST.Sweep.Stat.Bat % for different heterogeneous degree
     SYS.Bat{1}.curlim_var = TEST.Sweep.Bat{1}.curlim_var(a);
     SYS.Bat{1}.curlim_mu = TEST.Sweep.Bat{1}.curlim_mu(a);
     SYS = Flatten_battery_stat_cur(SYS); % calculate expected values
@@ -23,8 +23,8 @@ end
 Opt_PQ.power_capability = Power_capability;
 Opt_PQ.OptRes = OptRes;
 
-save('PQI_max20%.mat','Power_capability');
-save('PQoutput20%.mat','OptRes');
+save('PQI_max.mat','Power_capability');
+save('PQoutput.mat','OptRes');
 
 end
 

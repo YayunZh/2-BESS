@@ -19,7 +19,6 @@ ylim([80 100]);
 percentages = [5, 10, 15, 20];  
 title(['Battery Capacity Variation ', num2str(percentages(heter)), '%']);
 
-% title('Battery Capacity Variation 20%');
 xlabel('Normalized Aggregate Converter Rating');
 ylabel('Battery Power Utilization(%)');
 

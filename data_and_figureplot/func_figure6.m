@@ -17,7 +17,6 @@ ylabel('Active Power (p.u.)');
 
 axis equal;
 
-% plot(0, 0, 'ko', 'MarkerSize', 1, 'MarkerFaceColor', 'k');
 
 for i = 1:length(x1)
     plot([x1(i), x1(i)], [y1(i), 0], 'k--'); 
