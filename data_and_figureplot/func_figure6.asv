@@ -1,0 +1,51 @@
+function func_figure6(x,y)
+x1 = x./2700;
+y1 = y./2700;
+
+figure;
+set(gcf, 'Color', 'w');
+
+plot(x, y, 'k-', 'LineWidth', 2);
+axis([-3 3 -2 2]);  
+grid on;
+hold on;
+
+title('Normalized Aggregate Converter Rating = 0.5');
+xlabel('Reactive Power (p.u.)');
+ylabel('Active Power (p.u.)');
+
+axis equal;
+
+% plot(0, 0, 'ko', 'MarkerSize', 1, 'MarkerFaceColor', 'k');
+
+for i = 1:length(x1)
+    plot([x1(i), x1(i)], [y1(i), 0], 'k--'); 
+    plot([x1(i), 0], [y1(i), y1(i)], 'k--');  
+end
+
+% 在坐标轴上标出所需数值
+for i = 1:length(x)
+    if x(i) ~= 0  % 跳过中心点
+        text(x(i), -0.2, num2str(x(i)), 'HorizontalAlignment', 'center');
+    end
+end
+
+% 在y轴上根据y数组的元素动态标注
+for i = 1:length(y)
+    if y(i) ~= 0  % 跳过中心点
+        text(-0.2, y(i), num2str(y(i)), 'HorizontalAlignment', 'right');
+    end
+end
+
+hold off;
+
+
+
+
+
+
+
+
+
+end
+

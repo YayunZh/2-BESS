@@ -1,7 +1,7 @@
 function Opt_connection = func_connection_design(SYS,TEST)
 
 %% 
-for a = 1 : TEST.Sweep.Stat.Bat % for different heterogeneous degree
+for a = 1:4 %: TEST.Sweep.Stat.Bat % for different heterogeneous degree
     SYS.Bat{1}.curlim_var = TEST.Sweep.Bat{1}.curlim_var(a);
     SYS.Bat{1}.curlim_mu = TEST.Sweep.Bat{1}.curlim_mu(a);
     SYS = Flatten_battery_stat_cur(SYS); % calculate expected values
@@ -16,8 +16,8 @@ for a = 1 : TEST.Sweep.Stat.Bat % for different heterogeneous degree
     end
 end
 
-save('QL.mat','QL');
-save('Conv_Fir_mat.mat','Conv_Fir_mat');
+save('QL0.1.mat','QL');
+save('Conv_Fir_mat0.1.mat','Conv_Fir_mat');
 
 Opt_connection.OptRes = OptRes;
 Opt_connection.QL = QL;

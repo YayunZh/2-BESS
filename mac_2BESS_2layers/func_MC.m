@@ -1,9 +1,9 @@
 function Opt_MC = func_MC(SYS,TEST)
 
-load('QL.mat');
-load('Conv_Fir_mat.mat')
+load('QL0.1.mat');
+load('Conv_Fir_mat0.1.mat')
 
-for k0 = 1 : TEST.Sweep.Stat.Bat       % for different heterogeneous degree
+for k0 = 1:4 %: TEST.Sweep.Stat.Bat       % for different heterogeneous degree
     [SYS, Bat_Info_MC] = Update_k0_loop(k0,SYS,TEST);
 
     for k1 = 1 : TEST.Sweep.Stat.Conv   % for different normalized aggregate converter rating
